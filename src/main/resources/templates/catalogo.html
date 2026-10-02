@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/diseno :: cabecera('Catálogo')}"></head>
+<body>
+
+<nav th:replace="~{fragmentos/diseno :: menu}"></nav>
+
+<!-- Hero -->
+<section class="container my-5">
+    <div class="row align-items-center">
+        <div class="col-md-6">
+            <h1 class="fw-bold">Catálogo de planes</h1>
+            <p class="lead">Encuentra la membresía ideal para tus objetivos.</p>
+        </div>
+        <div class="col-md-6">
+            <img th:src="@{/img/portada-catalogo.jpg}" class="imagen-portada" alt="Catálogo de planes">
+        </div>
+    </div>
+</section>
+
+<!-- Grid de planes: 4 por fila -->
+<section class="container my-5">
+    <h2 class="text-center mb-4">Elige tu plan</h2>
+    <div class="row g-4">
+        <div class="col-12 col-sm-6 col-lg-3" th:each="plan : ${planes}">
+            <div class="card h-100 p-3 border-danger">
+                <h5 class="text-center" th:text="${plan.nombre}">Plan</h5>
+                <h4 class="text-center text-danger" th:text="'S/ ' + ${plan.precio}">S/ 0</h4>
+                <ul>
+                    <li th:text="${plan.descripcion}">Descripción</li>
+                    <li th:text="'Duración: ' + ${plan.duracionMeses} + ' mes(es)'">Duración</li>
+                </ul>
+                <a th:href="@{/matriculas}" class="btn btn-outline-danger mt-auto">Matricularme</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer th:replace="~{fragmentos/diseno :: pie}"></footer>
+
+</body>
+</html>

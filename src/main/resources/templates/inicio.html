@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/diseno :: cabecera('Inicio')}"></head>
+<body>
+
+<nav th:replace="~{fragmentos/diseno :: menu}"></nav>
+
+<!-- Hero: texto y botón a la izquierda, imagen a la derecha -->
+<section class="container my-5">
+    <div class="row align-items-center">
+        <div class="col-md-6">
+            <h1 class="fw-bold">Transforma tu cuerpo, transforma tu vida</h1>
+            <p class="lead">Matricúlate en FitLife GYM y elige el plan que mejor se adapte a ti.</p>
+            <a th:href="@{/matriculas}" class="btn btn-danger btn-lg">Matricúlate ahora</a>
+        </div>
+        <div class="col-md-6">
+            <img th:src="@{/img/portada-inicio.jpg}" class="imagen-portada" alt="Portada FitLife GYM">
+        </div>
+    </div>
+</section>
+
+<!-- 4 tarjetas con ícono circular -->
+<section class="container my-5">
+    <h2 class="text-center mb-4">¿Por qué elegirnos?</h2>
+    <div class="row g-4">
+        <div class="col-6 col-md-3">
+            <div class="card text-center h-100 p-3">
+                <div class="circulo mx-auto mb-3">🏋️</div>
+                <h5>Equipos modernos</h5>
+                <p class="mb-0">Maquinaria de última generación.</p>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card text-center h-100 p-3">
+                <div class="circulo mx-auto mb-3">👨‍🏫</div>
+                <h5>Entrenadores</h5>
+                <p class="mb-0">Acompañamiento profesional.</p>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card text-center h-100 p-3">
+                <div class="circulo mx-auto mb-3">🕒</div>
+                <h5>Horarios flexibles</h5>
+                <p class="mb-0">Abierto de lunes a domingo.</p>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card text-center h-100 p-3">
+                <div class="circulo mx-auto mb-3">👥</div>
+                <h5>Clases grupales</h5>
+                <p class="mb-0">Entrena en comunidad.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 3 planes (vienen del servicio) -->
+<section class="container my-5">
+    <h2 class="text-center mb-4">Nuestros planes</h2>
+    <div class="row g-4">
+        <div class="col-md-4" th:each="plan, fila : ${planes}" th:if="${fila.index < 3}">
+            <div class="card h-100 p-3">
+                <h4 th:text="${plan.nombre}">Plan</h4>
+                <ul>
+                    <li th:text="${plan.descripcion}">Descripción</li>
+                    <li th:text="'Duración: ' + ${plan.duracionMeses} + ' mes(es)'">Duración</li>
+                    <li th:text="'Precio: S/ ' + ${plan.precio}">Precio</li>
+                </ul>
+                <a th:href="@{/matriculas}" class="btn btn-outline-danger mt-auto">Matricularme</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer th:replace="~{fragmentos/diseno :: pie}"></footer>
+
+</body>
+</html>

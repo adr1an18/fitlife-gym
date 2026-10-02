@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/diseno :: cabecera('Gráfica de planes')}"></head>
+<body>
+
+<nav th:replace="~{fragmentos/diseno :: menu}"></nav>
+
+<section class="container my-5">
+    <h1 class="text-center fw-bold mb-5">Gráficas de planes</h1>
+    <div class="row g-4">
+        <div class="col-md-6">
+            <h5 class="text-center">Precio por plan (S/)</h5>
+            <canvas id="graficoBarras"></canvas>
+        </div>
+        <div class="col-md-6">
+            <h5 class="text-center">Duración por plan (meses)</h5>
+            <canvas id="graficoLineas"></canvas>
+        </div>
+    </div>
+</section>
+
+<footer th:replace="~{fragmentos/diseno :: pie}"></footer>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script th:inline="javascript">
+    Chart.defaults.color = '#eaeaea';
+    Chart.defaults.borderColor = '#333';
+
+    const nombres = /*[[${nombres}]]*/ [];
+    const precios = /*[[${precios}]]*/ [];
+    const duraciones = /*[[${duraciones}]]*/ [];
+
+    new Chart(document.getElementById('graficoBarras'), {
+        type: 'bar',
+        data: {
+            labels: nombres,
+            datasets: [{ label: 'Precio (S/)', data: precios, backgroundColor: '#c1121f' }]
+        }
+    });
+
+    new Chart(document.getElementById('graficoLineas'), {
+        type: 'line',
+        data: {
+            labels: nombres,
+            datasets: [{ label: 'Meses', data: duraciones, borderColor: '#d4af37', backgroundColor: '#d4af37', tension: 0.3 }]
+        }
+    });
+</script>
+
+</body>
+</html>
