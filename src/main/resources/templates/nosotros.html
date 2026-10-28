@@ -36,10 +36,10 @@
 <section class="container my-5">
     <h2 class="text-center mb-4">Nuestro equipo</h2>
     <div class="row g-4 text-center">
-        <div class="col-6 col-md-3">
-            <img th:src="@{/img/entrenador1.jpg}" class="imagen-equipo mb-2" alt="Entrenador 1">
-            <h6 class="mb-0">Entrenador 1</h6>
-            <small>Especialidad</small>
+                <div class="col-6 col-md-3" th:each="e : ${entrenadores}">
+            <img th:src="@{'/img/' + ${e.foto}}" class="imagen-equipo mb-2" th:alt="${e.nombres}">
+            <h6 class="mb-0" th:text="${e.nombres}">Entrenador</h6>
+            <small th:text="${e.especialidad}">Especialidad</small>
         </div>
         <div class="col-6 col-md-3">
             <img th:src="@{/img/entrenador2.jpg}" class="imagen-equipo mb-2" alt="Entrenador 2">

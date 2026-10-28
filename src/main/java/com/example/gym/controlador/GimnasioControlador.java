@@ -40,8 +40,9 @@ public class GimnasioControlador {
         return "catalogo";
     }
 
-    @GetMapping("/nosotros")
-    public String nosotros() {
+        @GetMapping("/nosotros")
+    public String nosotros(Model modelo) {
+        modelo.addAttribute("entrenadores", servicio.listarEntrenadores());
         return "nosotros";
     }
 
