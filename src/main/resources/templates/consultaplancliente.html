@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/diseno :: cabecera('Consulta Plan y Cliente')}"></head>
+<body>
+
+<nav th:replace="~{fragmentos/diseno :: menu}"></nav>
+
+<section class="container my-5">
+    <h1 class="fw-bold text-center">Consulta por plan y cliente</h1>
+    <p class="lead text-center">Elige un plan y luego un cliente matriculado en él.</p>
+</section>
+
+<!-- Listas desplegables en cascada -->
+<section class="container my-5">
+    <form th:action="@{/consultas/plan-cliente}" method="get" class="border rounded p-4">
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label class="form-label">Plan</label>
+                <select name="idPlan" class="form-select"
+                        onchange="this.form.idCliente.value=''; this.form.submit()">
+                    <option value="">Selecciona un plan</option>
+                    <option th:each="p : ${planes}" th:value="${p.id}" th:text="${p.nombre}"
+                            th:selected="${p.id == idPlan}"></option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Cliente</label>
+                <select name="idCliente" class="form-select" onchange="this.form.submit()"
+                        th:disabled="${clientes == null}">
+                    <option value="">Selecciona un cliente</option>
+                    <option th:each="c : ${clientes}" th:value="${c.id}"
+                            th:text="${c.nombres} + ' ' + ${c.apellidos}"
+                            th:selected="${c.id == idCliente}"></option>
+                </select>
+            </div>
+        </div>
+        <p class="text-muted mt-3 mb-0"
+           th:if="${idPlan != null and #lists.isEmpty(clientes)}">
+            No hay clientes matriculados en este plan.
+        </p>
+        <a th:href="@{/consultas/plan-cliente}" class="btn btn-outline-dark mt-3">Limpiar</a>
+    </form>
+</section>
+
+<!-- Resultado: detalle de la matrícula (DTO) -->
+<section class="container my-5" th:if="${detalle != null}">
+    <h2 class="text-center mb-4">Detalle de la matrícula</h2>
+    <div class="table-responsive">
+        <table class="table table-striped align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th><th>Cliente</th><th>Plan</th><th>Precio</th><th>Inicio</th><th>Fin</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="m : ${detalle}">
+                    <td th:text="${m.idMatricula}"></td>
+                    <td th:text="${m.cliente}"></td>
+                    <td th:text="${m.plan}"></td>
+                    <td th:text="'S/ ' + ${m.precio}"></td>
+                    <td th:text="${m.fechaInicio}"></td>
+                    <td th:text="${m.fechaFin}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<footer th:replace="~{fragmentos/diseno :: pie}"></footer>
+
+</body>
+</html>

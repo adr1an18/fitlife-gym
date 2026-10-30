@@ -1,47 +1,106 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragmentos/diseno :: cabecera('Matrículas')}"></head>
 <body>
 
 <nav th:replace="~{fragmentos/diseno :: menu}"></nav>
 
-<!-- Hero -->
+<!-- Presentación -->
 <section class="container my-5">
     <div class="row align-items-center">
         <div class="col-md-6">
             <h1 class="fw-bold">Matrículas</h1>
-            <p class="lead">Regístrate y elige tu plan en pocos pasos.</p>
+            <p class="lead">
+                Regístrate y elige tu plan en pocos pasos.
+            </p>
         </div>
+
         <div class="col-md-6">
-            <img th:src="@{/img/portada-matriculas.jpg}" class="imagen-portada" alt="Matrículas">
+            <img th:src="@{/img/portada-matriculas.jpg}"
+                 class="imagen-portada"
+                 alt="Matrículas">
         </div>
     </div>
 </section>
 
-<!-- Formulario de cliente -->
+<!-- Formulario de cliente: registrar o editar -->
 <section class="container my-5">
-    <h2 class="text-center mb-4">Registro de cliente</h2>
-    <form th:action="@{/clientes/guardar}" th:object="${cliente}" method="post" class="border rounded p-4">
+    <h2 class="text-center mb-4"
+        th:text="${cliente.id == 0} ? 'Registro de cliente' : 'Editar cliente'">
+        Registro de cliente
+    </h2>
+
+    <form th:action="@{/clientes/guardar}"
+          th:object="${cliente}"
+          method="post"
+          class="border rounded p-4">
+
+        <input type="hidden" th:field="*{id}">
+
         <div class="row g-3 mb-3">
             <div class="col-md-3">
-                <input type="text" th:field="*{nombres}" class="form-control" placeholder="Nombres" required>
+                <label for="nombres" class="form-label">Nombres</label>
+                <input type="text"
+                       th:field="*{nombres}"
+                       class="form-control"
+                       placeholder="Nombres"
+                       required>
             </div>
+
             <div class="col-md-3">
-                <input type="text" th:field="*{apellidos}" class="form-control" placeholder="Apellidos" required>
+                <label for="apellidos" class="form-label">Apellidos</label>
+                <input type="text"
+                       th:field="*{apellidos}"
+                       class="form-control"
+                       placeholder="Apellidos"
+                       required>
             </div>
+
             <div class="col-md-3">
-                <input type="text" th:field="*{dni}" class="form-control" placeholder="DNI" maxlength="8" required>
+                <label for="dni" class="form-label">DNI</label>
+                <input type="text"
+                       th:field="*{dni}"
+                       class="form-control"
+                       placeholder="DNI"
+                       maxlength="8"
+                       required>
             </div>
+
             <div class="col-md-3">
-                <input type="text" th:field="*{telefono}" class="form-control" placeholder="Teléfono" required>
+                <label for="telefono" class="form-label">Teléfono</label>
+                <input type="text"
+                       th:field="*{telefono}"
+                       class="form-control"
+                       placeholder="Teléfono"
+                       required>
             </div>
         </div>
+
         <div class="row g-3">
             <div class="col-md-6">
-                <input type="date" th:field="*{fechaNacimiento}" class="form-control" required>
+                <label for="fechaNacimiento" class="form-label">
+                    Fecha de nacimiento
+                </label>
+                <input type="date"
+                       th:field="*{fechaNacimiento}"
+                       class="form-control"
+                       required>
             </div>
-            <div class="col-md-6">
-                <button type="submit" class="btn btn-danger w-100">Registrar cliente</button>
+
+            <div class="col-md-6 d-flex align-items-end gap-2">
+                <button type="submit"
+                        class="btn btn-danger w-100"
+                        th:text="${cliente.id == 0}
+                            ? 'Registrar cliente'
+                            : 'Guardar cambios'">
+                    Registrar cliente
+                </button>
+
+                <a th:if="${cliente.id != 0}"
+                   th:href="@{/matriculas}"
+                   class="btn btn-outline-secondary">
+                    Cancelar
+                </a>
             </div>
         </div>
     </form>
@@ -50,60 +109,129 @@
 <!-- Formulario de matrícula -->
 <section class="container my-5">
     <h2 class="text-center mb-4">Matricularme en un plan</h2>
-    <form th:action="@{/matriculas/guardar}" th:object="${matricula}" method="post" class="border rounded p-4">
+
+    <form th:action="@{/matriculas/guardar}"
+          th:object="${matricula}"
+          method="post"
+          class="border rounded p-4">
+
         <div class="row g-3 mb-3">
             <div class="col-md-6">
-                <select th:field="*{idCliente}" class="form-select" required>
+                <label for="idCliente" class="form-label">Cliente</label>
+
+                <select th:field="*{idCliente}"
+                        class="form-select"
+                        required>
                     <option value="">Selecciona un cliente</option>
-                    <option th:each="c : ${clientes}" th:value="${c.id}"
-                            th:text="${c.nombres} + ' ' + ${c.apellidos}">Cliente</option>
+
+                    <option th:each="c : ${clientes}"
+                            th:value="${c.id}"
+                            th:text="${c.nombres} + ' ' + ${c.apellidos}">
+                        Cliente
+                    </option>
                 </select>
             </div>
+
             <div class="col-md-6">
-                <select th:field="*{idPlan}" class="form-select" required>
+                <label for="idPlan" class="form-label">Plan</label>
+
+                <select th:field="*{idPlan}"
+                        class="form-select"
+                        required>
                     <option value="">Selecciona un plan</option>
-                    <option th:each="p : ${planes}" th:value="${p.id}"
-                            th:text="${p.nombre} + ' - S/ ' + ${p.precio}">Plan</option>
+
+                    <option th:each="p : ${planes}"
+                            th:value="${p.id}"
+                            th:text="${p.nombre} + ' - S/ ' + ${p.precio}">
+                        Plan
+                    </option>
                 </select>
             </div>
         </div>
+
         <div class="row g-3">
-            <div class="col-md-4">
-                <label class="form-label">Fecha de inicio</label>
-                <input type="date" th:field="*{fechaInicio}" class="form-control" required>
+            <div class="col-md-6">
+                <label for="fechaInicio" class="form-label">
+                    Fecha de inicio
+                </label>
+
+                <input type="date"
+                       th:field="*{fechaInicio}"
+                       class="form-control"
+                       required>
+
+                <div class="form-text">
+                    La fecha de fin se calcula según la duración del plan.
+                </div>
             </div>
-            <div class="col-md-4">
-                <label class="form-label">Fecha de fin</label>
-                <input type="date" th:field="*{fechaFin}" class="form-control" required>
-            </div>
-            <div class="col-md-4 d-flex align-items-end">
-                <button type="submit" class="btn btn-danger w-100">Matricular</button>
+
+            <div class="col-md-6 d-flex align-items-end">
+                <button type="submit" class="btn btn-danger w-100">
+                    Matricular
+                </button>
             </div>
         </div>
     </form>
 </section>
 
-<!-- Listado de clientes con búsqueda -->
-<section class="container my-5">
+<!-- Listado de clientes -->
+<section class="container my-5" id="clientes">
     <h2 class="text-center mb-4">Clientes registrados</h2>
-    <form th:action="@{/clientes/buscar}" method="get" class="row g-2 mb-3">
+
+    <!-- Mensajes enviados por el controlador -->
+    <div th:if="${errorCliente != null}"
+         class="alert alert-warning"
+         role="alert"
+         th:text="${errorCliente}">
+    </div>
+
+    <div th:if="${exitoCliente != null}"
+         class="alert alert-success"
+         role="status"
+         th:text="${exitoCliente}">
+    </div>
+
+    <!-- Búsqueda -->
+    <form th:action="@{/clientes/buscar}"
+          method="get"
+          class="row g-2 mb-3">
+
         <div class="col-md-8">
-            <input type="text" name="texto" class="form-control" placeholder="Buscar por nombre, apellido o DNI">
+            <input type="text"
+                   name="texto"
+                   class="form-control"
+                   placeholder="Buscar por nombre, apellido o DNI"
+                   aria-label="Buscar clientes">
         </div>
+
         <div class="col-md-2">
-            <button type="submit" class="btn btn-dark w-100">Buscar</button>
+            <button type="submit" class="btn btn-dark w-100">
+                Buscar
+            </button>
         </div>
+
         <div class="col-md-2">
-            <a th:href="@{/matriculas}" class="btn btn-outline-dark w-100">Ver todos</a>
+            <a th:href="@{/matriculas}"
+               class="btn btn-outline-secondary w-100">
+                Ver todos
+            </a>
         </div>
     </form>
+
     <div class="table-responsive">
         <table class="table table-striped align-middle">
             <thead class="table-dark">
                 <tr>
-                    <th>ID</th><th>Nombres</th><th>Apellidos</th><th>DNI</th><th>Teléfono</th><th>Nacimiento</th><th></th>
+                    <th>ID</th>
+                    <th>Nombres</th>
+                    <th>Apellidos</th>
+                    <th>DNI</th>
+                    <th>Teléfono</th>
+                    <th>Nacimiento</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
+
             <tbody>
                 <tr th:each="c : ${clientes}">
                     <td th:text="${c.id}"></td>
@@ -112,43 +240,73 @@
                     <td th:text="${c.dni}"></td>
                     <td th:text="${c.telefono}"></td>
                     <td th:text="${c.fechaNacimiento}"></td>
+
                     <td>
-                        <a th:href="@{/clientes/eliminar/{id}(id=${c.id})}" class="btn btn-sm btn-outline-danger"
-                           onclick="return confirm('¿Eliminar este cliente?')">Eliminar</a>
+                        <div class="d-flex gap-2">
+                            <a th:href="@{/clientes/editar/{id}(id=${c.id})}"
+                               class="btn btn-sm btn-outline-warning">
+                                Editar
+                            </a>
+
+                            <a th:href="@{/clientes/eliminar/{id}(id=${c.id})}"
+                               class="btn btn-sm btn-outline-danger"
+                               onclick="return confirm('¿Eliminar este cliente? Solo se eliminará si no tiene matrículas, rutinas ni asistencias registradas.')">
+                                Eliminar
+                            </a>
+                        </div>
                     </td>
                 </tr>
+
                 <tr th:if="${#lists.isEmpty(clientes)}">
-                    <td colspan="7" class="text-center text-muted">No hay clientes para mostrar.</td>
+                    <td colspan="7" class="text-center text-muted">
+                        No hay clientes para mostrar.
+                    </td>
                 </tr>
             </tbody>
         </table>
     </div>
 </section>
 
-<!-- Listado de matrículas -->
+<!-- Listado de matrículas mediante DTO -->
 <section class="container my-5">
     <h2 class="text-center mb-4">Matrículas realizadas</h2>
+
     <div class="table-responsive">
         <table class="table table-striped align-middle">
             <thead class="table-dark">
                 <tr>
-                    <th>ID</th><th>ID Cliente</th><th>ID Plan</th><th>Inicio</th><th>Fin</th><th></th>
+                    <th>ID</th>
+                    <th>Cliente</th>
+                    <th>Plan</th>
+                    <th>Precio</th>
+                    <th>Inicio</th>
+                    <th>Fin</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
+
             <tbody>
                 <tr th:each="m : ${matriculas}">
-                    <td th:text="${m.id}"></td>
-                    <td th:text="${m.idCliente}"></td>
-                    <td th:text="${m.idPlan}"></td>
+                    <td th:text="${m.idMatricula}"></td>
+                    <td th:text="${m.cliente}"></td>
+                    <td th:text="${m.plan}"></td>
+                    <td th:text="'S/ ' + ${m.precio}"></td>
                     <td th:text="${m.fechaInicio}"></td>
                     <td th:text="${m.fechaFin}"></td>
+
                     <td>
-                        <a th:href="@{/matriculas/eliminar/{id}(id=${m.id})}" class="btn btn-sm btn-outline-danger"
-                           onclick="return confirm('¿Eliminar esta matrícula?')">Eliminar</a>
+                        <a th:href="@{/matriculas/eliminar/{id}(id=${m.idMatricula})}"
+                           class="btn btn-sm btn-outline-danger"
+                           onclick="return confirm('¿Eliminar esta matrícula?')">
+                            Eliminar
+                        </a>
                     </td>
                 </tr>
+
                 <tr th:if="${#lists.isEmpty(matriculas)}">
-                    <td colspan="6" class="text-center text-muted">Aún no hay matrículas.</td>
+                    <td colspan="7" class="text-center text-muted">
+                        Aún no hay matrículas.
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -158,19 +316,23 @@
 <!-- Pasos -->
 <section class="container my-5">
     <h2 class="text-center mb-4">¿Cómo funciona?</h2>
+
     <div class="row text-center align-items-center">
         <div class="col-6 col-md-3 mb-3">
             <div class="circulo mx-auto mb-2">1</div>
             <h6>Regístrate</h6>
         </div>
+
         <div class="col-6 col-md-3 mb-3">
             <div class="circulo mx-auto mb-2">2</div>
             <h6>Elige tu plan</h6>
         </div>
+
         <div class="col-6 col-md-3 mb-3">
             <div class="circulo mx-auto mb-2">3</div>
             <h6>Matricúlate</h6>
         </div>
+
         <div class="col-6 col-md-3 mb-3">
             <div class="circulo mx-auto mb-2">4</div>
             <h6>Empieza a entrenar</h6>
